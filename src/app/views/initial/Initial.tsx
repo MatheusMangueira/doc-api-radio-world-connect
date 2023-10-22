@@ -1,7 +1,7 @@
-import { BallYellow } from '@/app/components/BallYellow/BallYellow';
+import { BallYellow } from '@/app/components/BallYellow';
 import { Button } from '@/app/components/Button';
 import { CardStations } from '@/app/components/CardStations';
-import { Title } from '@/app/components/Title/Title';
+import { Title } from '@/app/components/Title';
 
 export const Initial = () => {
   return (
@@ -17,9 +17,7 @@ export const Initial = () => {
           </h4>
         </div>
         <div className="flex justify-center items-center w-full">
-          <Button
-          href='/doc'
-          name="Developer API" />
+          <Button href="/doc" name="Developer API" />
         </div>
       </div>
     </div>
