@@ -1,4 +1,4 @@
-import { BallYellow } from '@/app/components/BallYellow';
+import { Ball } from '@/app/components/Ball';
 import { Button } from '@/app/components/Button';
 import { CardStations } from '@/app/components/CardStations';
 import { Title } from '@/app/components/Title';
@@ -6,11 +6,15 @@ import { Title } from '@/app/components/Title';
 export const Initial = () => {
   return (
     <div className="relative w-full h-[570px] flex justify-center items-center">
-      <BallYellow />
+      <Ball
+        className="lg:w-[648px] lg:h-[648px]
+      md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl lg:top-[-150px] lg:left-[100px]
+      md:top-[-90px] md:left-[50px] top-[0px] left-[0px]"
+      />
       <CardStations name="Estações até o momento: 500" />
       <div className="flex flex-col lg:gap-12 gap-6 justify-center items-center w-full h-full">
         <div className="flex flex-col gap-4 justify-center items-center w-full">
-          <Title name="Para quem ama" />
+          <Title span="se conectar" name="Para quem ama" />
           <h4 className="lg:text-[24px] sm:text-[18px] text-sm font-light text-center lg:max-w-[560px] sm:max-w-[460px] max-w-[260px] leading-normal ">
             A Radio World Connect é uma radio open source para você que ama
             ouvir uma boa musica.
