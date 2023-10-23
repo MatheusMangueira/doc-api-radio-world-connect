@@ -3,9 +3,6 @@ import { Fragment } from 'react';
 
 import { Popover, Transition } from '@headlessui/react';
 import {
-  GithubLogo,
-  InstagramLogo,
-  LinkedinLogo,
   List,
   X
 } from 'phosphor-react';
@@ -13,10 +10,11 @@ import { NavMobileItem } from './NavMobileItem';
 
 const navigation = [
   { id: '1', name: 'Inicio', href: '/' },
-  { id: '2', name: 'Lista de estações', href: '/lista' },
-  { id: '3', name: 'Developer API', href: '/doc' },
+  { id: '2', name: 'Lista de estações', href: '/list' },
+  { id: '3', name: 'Cadastrar radio', href: '/newStation'},
+  { id: '4', name: 'Developer API', href: '/doc' },
   {
-    id: '4',
+    id: '5',
     name: 'Fork',
     href: 'https://github.com/MatheusMangueira/diet-control-api'
   }
@@ -31,7 +29,7 @@ const solutions = [
 
 export const Navbar = () => {
   return (
-    <div className="fixed w-full z-50" aria-label="Navbar" id="Home">
+    <div className="sticky top-0 w-full z-50">
       <Popover>
         <div className="py-5 lg:px-10 px-5 flex justify-between w-full items-center bg-secondary relative backdrop-blur-sm bg-white/30 z-10 border-b border-[#00000075]">
           <div className=" w-full max-w-sm ">
@@ -59,16 +57,14 @@ export const Navbar = () => {
             className="hidden lg:flex space-x-10 relative items-center"
           >
             {navigation.map((item) => (
-              <>
-                <a
-                  target={item.name === 'Fork' ? '_blank' : '_self'}
-                  className="text-black duration-500                 hover:text-[#ccc] text-md"
-                  key={item.id}
-                  href={item.href}
-                >
-                  {item.name}
-                </a>
-              </>
+              <a
+                target={item.name === 'Fork' ? '_blank' : '_self'}
+                className="text-black duration-500                 hover:text-[#ccc] text-md"
+                key={item.id}
+                href={item.href}
+              >
+                {item.name}
+              </a>
             ))}
           </Popover.Group>
         </div>
@@ -99,15 +95,13 @@ export const Navbar = () => {
                 <div className="mt-6">
                   <nav className="grid grid-cols-1 gap-7 ">
                     {navigation.map((item) => (
-                      <>
-                        <NavMobileItem
-                          target={item.name === 'Fork' ? '_blank' : '_self'}
-                          key={item.id}
-                          href={item.href}
-                        >
-                          {item.name}
-                        </NavMobileItem>
-                      </>
+                      <NavMobileItem
+                        target={item.name === 'Fork' ? '_blank' : '_self'}
+                        key={item.id}
+                        href={item.href}
+                      >
+                        {item.name}
+                      </NavMobileItem>
                     ))}
                   </nav>
                 </div>
