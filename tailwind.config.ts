@@ -15,11 +15,13 @@ const config: Config = {
       },
 
       colors: {
-        'ball-yellow': 'rgba(238, 187, 8, 0.17)'
+        'ball-yellow': 'rgba(238, 187, 8, 0.17)',
+        'ball-red': 'rgb(202 15 3 / 17%)'
       },
 
       boxShadow: {
         '3xl': '0px 4px 146px 64px rgb(238 187 8 / 24%)',
+        'ballRed': '0px 4px 138px rgb(202 15 3 / 44%)'
       }
 
     },
