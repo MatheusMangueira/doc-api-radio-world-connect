@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -37,160 +37,23 @@ import {
 } from '@/components/ui/table';
 import { StationTitle } from '../newStationsView/components/stationTitle';
 import { Ball } from '@/app/components/Ball';
+import { api } from '@/app/service/api/api';
 
 type Payment = {
   name: string;
-  url: string;
+  urlRadio: string;
   latitude: number;
   longitude: number;
 };
 
-const data: Payment[] = [
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  },
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  },
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  },
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  },
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  },
-  {
-    name: 'radio 1',
-    url: 'https://streaming.radio.com.br/stream/1',
-    latitude: 1,
-    longitude: 1
-  },
-  {
-    name: 'radio 2',
-    url: 'https://streaming.radio.com.br/stream/2',
-    latitude: 2,
-    longitude: 2
-  },
-  {
-    name: 'radio 3',
-    url: 'https://streaming.radio.com.br/stream/3',
-    latitude: 3,
-    longitude: 3
-  },
-  {
-    name: 'radio 4',
-    url: 'https://streaming.radio.com.br/stream/4',
-    latitude: 4,
-    longitude: 4
-  }
-];
+type StationsProps = {
+  id: string;
+  name: string;
+  image?: string;
+  urlRadio: string;
+  latitude: number;
+  longitude: number;
+};
 
 export const columns: ColumnDef<Payment>[] = [
   {
@@ -209,9 +72,11 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue('name')}</div>
   },
   {
-    accessorKey: 'url',
+    accessorKey: 'urlRadio',
     header: 'URL da rádio',
-    cell: ({ row }) => <div className="lowercase">{row.getValue('url')}</div>
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue('urlRadio')}</div>
+    )
   },
   {
     accessorKey: 'latitude',
@@ -256,7 +121,7 @@ export const columns: ColumnDef<Payment>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               className=""
-              onClick={() => navigator.clipboard.writeText(payment.url)}
+              onClick={() => navigator.clipboard.writeText(payment.urlRadio)}
             >
               Copiar URL
             </DropdownMenuItem>
@@ -269,17 +134,29 @@ export const columns: ColumnDef<Payment>[] = [
 ];
 
 export const ListStationView = () => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState({
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
     pageSize: 10,
     pageIndex: 0
   });
+
+  const [data, setData] = useState<StationsProps[]>([]);
+
+  useEffect(() => {
+    const getStations = async () => {
+      try {
+        const response = await api.get('/radio/all');
+        const stations = response.data;
+        setData(stations);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getStations();
+  }, []);
 
   const table = useReactTable({
     data,
@@ -314,131 +191,139 @@ export const ListStationView = () => {
         <StationTitle name="Lista de Estações" />
       </div>
 
-      <div className="w-full ">
-        <div className="flex items-center py-4">
-          <Input
-            placeholder="Filtrar por nome..."
-            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-            onChange={(event) =>
-              table.getColumn('name')?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger className="bg-[#fff]" asChild>
-              <Button variant="outline" className="ml-auto">
-                Colunas <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#fff]" align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize bg-[#fff]"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id === 'name'
-                        ? 'Nome'
-                        : column.id === 'url'
-                        ? 'URL da rádio'
-                        : column.id === 'latitude'
-                        ? 'Latitude'
-                        : column.id === 'longitude'
-                        ? 'Longitude'
-                        : 'Ações'}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+      {!data ? (
+        <div className="w-full flex justify-center items-center text-black text-2xl">
+          Carregando...
         </div>
-        <div className="rounded-md border">
-          <Table className="bg-[#f1f1f1]">
-            <TableHeader className="bg-gray-300">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  className="border-b border-black"
-                  key={headerGroup.id}
-                >
-                  {headerGroup.headers.map((header) => {
+      ) : (
+        <div className="w-full ">
+          <div className="flex items-center py-4">
+            <Input
+              placeholder="Filtrar por nome..."
+              value={
+                (table.getColumn('name')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn('name')?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="bg-[#fff]" asChild>
+                <Button variant="outline" className="ml-auto">
+                  Colunas <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-[#fff]" align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
                     return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize bg-[#fff]"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id === 'name'
+                          ? 'Nome'
+                          : column.id === 'urlRadio'
+                          ? 'URL da rádio'
+                          : column.id === 'latitude'
+                          ? 'Latitude'
+                          : column.id === 'longitude'
+                          ? 'Longitude'
+                          : 'Ações'}
+                      </DropdownMenuCheckboxItem>
                     );
                   })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div className="rounded-md border">
+            <Table className="bg-[#f1f1f1]">
+              <TableHeader className="bg-gray-300">
+                {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
-                    className="border-b border-black hover:bg-gray-500 hover:bg-opacity-10"
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
+                    className="border-b border-black"
+                    key={headerGroup.id}
                   >
-                    {row.getVisibleCells().map((cell, index) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    Nenhum dado encontrado
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
-            {pagination.pageIndex + 1}- {table.getPageCount()} página(s).
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      className="border-b border-black hover:bg-gray-500 hover:bg-opacity-10"
+                      key={row.id}
+                      data-state={row.getIsSelected() && 'selected'}
+                    >
+                      {row.getVisibleCells().map((cell, index) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      Aguarde um momento...
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
-          <div className="space-x-2">
-            <Button
-              className=" cursor-pointer "
-              variant="default"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Anterior
-            </Button>
-            <Button
-              className="cursor-pointe"
-              variant="default"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Proximo
-            </Button>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {pagination.pageIndex + 1}- {table.getPageCount()} página(s).
+            </div>
+            <div className="space-x-2">
+              <Button
+                className=" cursor-pointer "
+                variant="default"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Anterior
+              </Button>
+              <Button
+                className="cursor-pointe"
+                variant="default"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Proximo
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
