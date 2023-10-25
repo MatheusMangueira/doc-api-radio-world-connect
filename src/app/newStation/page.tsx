@@ -1,4 +1,4 @@
-import { NewStationsView } from "../views/newStationsView";
+import { NewStationsView } from '../views/newStationsView';
 
 export default function NewStation() {
   return (

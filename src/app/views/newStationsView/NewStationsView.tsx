@@ -1,6 +1,6 @@
 'use client';
 import { Ball } from '@/app/components/Ball';
-import { Title } from './components/Title';
+import { StationTitle } from './components/stationTitle';
 import { Input } from './components/input';
 import { Controller, useForm } from 'react-hook-form';
 import { ButtonSubmit } from './components/buttonSubmit';
@@ -43,7 +43,7 @@ export const NewStationsView = () => {
       md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl bottom-0 lg:left-[0px]"
       />
       <div className="pt-14 pb-5">
-        <Title name="Cadastrar nova Radio" />
+        <StationTitle name="Cadastrar nova Radio" />
       </div>
       <div className="w-full text-center pb-10">
         <p>Cadastre sua radio preferida</p>
