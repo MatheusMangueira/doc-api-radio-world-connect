@@ -7,16 +7,32 @@ import { api } from '@/app/service/api/api';
 import { useEffect, useState } from 'react';
 
 type StationsProps = {
-  id: string;
-  name: string;
-  image?: string;
-  urlRadio: string;
-  latitude: number;
-  longitude: number;
+  content: {
+    id: string;
+    name: string;
+    image?: string;
+    urlRadio: string;
+    latitude: number;
+    longitude: number;
+  }[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: string;
+  size: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
 };
 
 export const Initial = () => {
-  const [data, setData] = useState<StationsProps[]>([]);
+  const [data, setData] = useState<StationsProps>();
 
   useEffect(() => {
     const getStations = async () => {
@@ -38,7 +54,9 @@ export const Initial = () => {
       md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl lg:top-[-150px] lg:left-[100px]
       md:top-[-90px] md:left-[50px] top-[0px] left-[0px]"
       />
-      <CardStations name={`Estações até o momento: ${data.length}`} />
+      <CardStations
+        name={`Estações até o momento: ${data ? data?.totalElements : 0}`}
+      />
       <div className="flex flex-col lg:gap-12 gap-6 justify-center items-center w-full h-full">
         <div className="flex flex-col gap-4 justify-center items-center w-full">
           <Title span="se conectar" name="Para quem ama" />

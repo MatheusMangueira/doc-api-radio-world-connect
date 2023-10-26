@@ -40,19 +40,39 @@ import { Ball } from '@/app/components/Ball';
 import { api } from '@/app/service/api/api';
 
 type Payment = {
-  name: string;
-  urlRadio: string;
-  latitude: number;
-  longitude: number;
+  content: {
+    id: string;
+    name: string;
+    image?: string;
+    urlRadio: string;
+    latitude: number;
+    longitude: number;
+  };
 };
 
 type StationsProps = {
-  id: string;
-  name: string;
-  image?: string;
-  urlRadio: string;
-  latitude: number;
-  longitude: number;
+  content: {
+    id: string;
+    name: string;
+    image?: string;
+    urlRadio: string;
+    latitude: number;
+    longitude: number;
+  };
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: string;
+  size: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
 };
 
 export const columns: ColumnDef<Payment>[] = [
@@ -101,7 +121,7 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row.original.content;
 
       return (
         <DropdownMenu>
@@ -149,7 +169,7 @@ export const ListStationView = () => {
     const getStations = async () => {
       try {
         const response = await api.get('/radio/all');
-        const stations = response.data;
+        const stations = response.data.content;
         setData(stations);
       } catch (error) {
         console.log(error);
