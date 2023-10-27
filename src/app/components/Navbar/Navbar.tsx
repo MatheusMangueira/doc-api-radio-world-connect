@@ -10,9 +10,9 @@ import { NavMobileItem } from './NavMobileItem';
 
 const navigation = [
   { id: '1', name: 'Inicio', href: '/' },
-  { id: '2', name: 'Lista de estações', href: '/listStation' },
-  { id: '3', name: 'Cadastrar radio', href: '/newStation'},
-  { id: '4', name: 'Developer API', href: '/doc' },
+  { id: '2', name: 'Lista de estações', href: '/lista-de-estacao' },
+  { id: '3', name: 'Cadastrar radio', href: '/nova-estacao'},
+  { id: '4', name: 'Documentação API', href: '/doc' },
   {
     id: '5',
     name: 'Fork',
