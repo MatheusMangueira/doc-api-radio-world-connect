@@ -61,7 +61,7 @@ export const Initial = () => {
         <div className="flex flex-col gap-4 justify-center items-center w-full">
           <Title span="se conectar" name="Para quem ama" />
           <h4 className="lg:text-[24px] sm:text-[18px] text-sm font-light text-center lg:max-w-[560px] sm:max-w-[460px] max-w-[260px] leading-normal ">
-            A Radio World Connect é uma radio open source para você que ama
+            A Radio World Connect é uma API open source para você que ama
             ouvir uma boa musica.
           </h4>
         </div>
