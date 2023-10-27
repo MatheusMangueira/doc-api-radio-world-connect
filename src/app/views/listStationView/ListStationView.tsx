@@ -193,11 +193,11 @@ export const ListStationView = () => {
 
   return (
     <div className=" w-full h-screen relative">
-      <Ball
+      {/* <Ball
         className="lg:w-[648px] lg:h-[648px]
       md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl lg:top-[-150px] lg:left-[100px]
       md:top-[-90px] md:left-[50px] top-[0px] left-[0px]"
-      />
+      /> */}
 
       <div className="pt-14 pb-8">
         <StationTitle name="Lista de Estações" />

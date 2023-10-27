@@ -49,11 +49,11 @@ export const Initial = () => {
 
   return (
     <div className="relative w-full h-[570px] flex justify-center items-center">
-      <Ball
+      {/* <Ball
         className="lg:w-[648px] lg:h-[648px]
       md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl lg:top-[-150px] lg:left-[100px]
       md:top-[-90px] md:left-[50px] top-[0px] left-[0px]"
-      />
+      /> */}
       <CardStations
         name={`Estações até o momento: ${data ? data?.totalElements : 0}`}
       />
@@ -66,7 +66,7 @@ export const Initial = () => {
           </h4>
         </div>
         <div className="flex justify-center items-center w-full">
-          <Button href="/doc" name="Developer API" />
+          <Button href="/doc" name="Documentação API" />
         </div>
       </div>
     </div>

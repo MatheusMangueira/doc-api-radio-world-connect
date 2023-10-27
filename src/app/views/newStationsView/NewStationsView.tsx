@@ -83,10 +83,10 @@ export const NewStationsView = () => {
 
   return (
     <div className="relative w-full h-screen ">
-      <Ball
+      {/* <Ball
         className="lg:w-[648px] lg:h-[648px]
       md:w-[400px] md:h-[400px] w-[300px] h-[300px] bg-ball-yellow shadow-3xl bottom-0 lg:left-[0px]"
-      />
+      /> */}
       {alertTime && <Alert message={alert.message} type={alert.type} />}
       <div className="pt-14 pb-5">
         <StationTitle name="Cadastrar nova Radio" />
