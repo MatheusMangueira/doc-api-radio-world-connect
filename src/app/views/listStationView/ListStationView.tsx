@@ -40,25 +40,16 @@ import { Ball } from '@/app/components/Ball';
 import { api } from '@/app/service/api/api';
 
 type Payment = {
-  content: {
-    id: string;
-    name: string;
-    image?: string;
-    urlRadio: string;
-    latitude: number;
-    longitude: number;
-  };
+  id: string;
+  name: string;
+  image?: string;
+  urlRadio: string;
+  latitude: number;
+  longitude: number;
 };
 
-type StationsProps = {
-  content: {
-    id: string;
-    name: string;
-    image?: string;
-    urlRadio: string;
-    latitude: number;
-    longitude: number;
-  };
+type StationsProps = Payment & {
+  // content: Payment[];
   empty: boolean;
   first: boolean;
   last: boolean;
@@ -75,7 +66,7 @@ type StationsProps = {
   totalPages: number;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<StationsProps>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -121,7 +112,8 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original.content;
+      const payment = row.original;
+      console.log(payment.name);
 
       return (
         <DropdownMenu>
