@@ -17,3 +17,5 @@ export const about = [
     description: 'A API Radio World Connect é uma ferramenta versátil, pronta para ser incorporada em projetos pessoais e comerciais. Seja para criar aplicativos móveis personalizados, integrar em sistemas de entretenimento ou desenvolver soluções inovadoras para a indústria de transmissão. '
   }
 ];
+
+
